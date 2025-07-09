@@ -20,7 +20,6 @@ class InputImage(Input):
     class Config:
         title = "Image"
 
-
 class OutputImage(Output):
     name: Literal["outputImage"] = "outputImage"
     value: Union[List[Image],Image]
@@ -37,7 +36,6 @@ class OutputImage(Output):
     class Config:
         title = "Image"
 
-
 class KeepSideFalse(Config):
     name: Literal["False"] = "False"
     value: Literal[False] = False
@@ -47,7 +45,6 @@ class KeepSideFalse(Config):
     class Config:
         title = "Disable"
 
-
 class KeepSideTrue(Config):
     name: Literal["True"] = "True"
     value: Literal[True] = True
@@ -56,7 +53,6 @@ class KeepSideTrue(Config):
 
     class Config:
         title = "Enable"
-
 
 class KeepSideBBox(Config):
     """
@@ -69,8 +65,6 @@ class KeepSideBBox(Config):
 
     class Config:
         title = "Keep Sides"
-
-
 class Degree(Config):
     """
         Positive angles specify counterclockwise rotation while negative angles indicate clockwise rotation.
@@ -79,42 +73,35 @@ class Degree(Config):
     value: int = Field(ge=-359.0, le=359.0,default=0)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
-    placeHolder: Literal["[-359, 359]"] = "[-359, 359]"
 
     class Config:
-        title = "Angle"
+        title = "AAAngle"
 
-
-class PackageInputs(Inputs):
+class SelcukGrayExecutorInputs(Inputs):
     inputImage: InputImage
 
-
-class PackageConfigs(Configs):
+class SelcukGrayConfigs(Configs):
     degree: Degree
     drawBBox: KeepSideBBox
 
-
-class PackageOutputs(Outputs):
+class SelcukGrayExecutorOutputs(Outputs):
     outputImage: OutputImage
 
-
-class PackageRequest(Request):
-    inputs: Optional[PackageInputs]
-    configs: PackageConfigs
+class SelcukGrayExecutorRequest(Request):
+    inputs: Optional[SelcukGrayExecutorInputs]
+    configs: SelcukGrayConfigs
 
     class Config:
         json_schema_extra = {
             "target": "configs"
         }
 
+class SelcukGrayExecutorResponse(Response):
+    outputs: SelcukGrayExecutorOutputs
 
-class PackageResponse(Response):
-    outputs: PackageOutputs
-
-
-class PackageExecutor(Config):
-    name: Literal["Package"] = "Package"
-    value: Union[PackageRequest, PackageResponse]
+class SelcukGrayExecutor(Config):
+    name: Literal["SelcukGrayExecutor"] = "SelcukGrayExecutor"
+    value: Union[SelcukGrayExecutorRequest, SelcukGrayExecutorResponse]
     type: Literal["object"] = "object"
     field: Literal["option"] = "option"
 
@@ -126,10 +113,9 @@ class PackageExecutor(Config):
             }
         }
 
-
 class ConfigExecutor(Config):
     name: Literal["ConfigExecutor"] = "ConfigExecutor"
-    value: Union[PackageExecutor]
+    value: Union[SelcukGrayExecutor]
     type: Literal["executor"] = "executor"
     field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
 
@@ -139,12 +125,10 @@ class ConfigExecutor(Config):
             "target": "value"
         }
 
-
 class PackageConfigs(Configs):
     executor: ConfigExecutor
-
 
 class PackageModel(Package):
     configs: PackageConfigs
     type: Literal["component"] = "component"
-    name: Literal["Package"] = "Package"
+    name: Literal["SelcukGray"] = "SelcukGray"
